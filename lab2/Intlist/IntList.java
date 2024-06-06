@@ -80,9 +80,26 @@ public class IntList {
      * *  elements of B.  May modify items of A. Don't use 'new'.
      */
 
+    private static IntList copyIntList(IntList L){
+        if (L == null) {
+            return null;
+        }
+        return new IntList(L.first, copyIntList(L.rest));
+    }
+
+    private static IntList getLastNode(IntList L){
+        while (L.rest != null) {
+            L = L.rest;
+        }
+        return L;
+    }
+    
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+        IntList copyB = copyIntList(B);
+        IntList lastNodeOfA = getLastNode(A);
+        lastNodeOfA.rest = copyB;
+        return A;
     }
 
     /**
@@ -91,6 +108,7 @@ public class IntList {
      */
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
+        IntList 
         return null;
     }
 
