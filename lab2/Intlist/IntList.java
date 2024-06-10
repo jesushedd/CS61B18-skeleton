@@ -25,6 +25,7 @@ public class IntList {
         rest = rest0;
     }
 
+
     /**
      * A List with null rest, and first = 0.
      */
@@ -95,7 +96,7 @@ public class IntList {
     }
     
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
+        //
         IntList copyB = copyIntList(B);
         IntList lastNodeOfA = getLastNode(A);
         lastNodeOfA.rest = copyB;
@@ -107,9 +108,12 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        IntList 
-        return null;
+        //
+        IntList copyA = copyIntList(A);
+        IntList copyB = copyIntList(B);
+        IntList lastNodeOfCopyA = getLastNode(copyA);
+        lastNodeOfCopyA.rest = copyB;
+        return copyA;
     }
 
 
