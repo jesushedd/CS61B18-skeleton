@@ -56,4 +56,6 @@ public class TestCalcForceExertedByXY {
         checkEquals(p1.calcForceExertedByY(p2), 0.0, "calcForceExertedByY()", 0.01);
         checkEquals(p1.calcForceExertedByY(p3), 5.336e-11, "calcForceExertedByY()", 0.01);
     }
+
+
 }

@@ -86,7 +86,11 @@ public class Planet {
         //Calculate and update new position
         this.xxPos = this.xxPos + dTime * newXvelocity;
         this.yyPos = this.yyPos + dTime * newYvelocity;
+    }
 
+    /*Draw planet in canvas*/
+    public void drawn(){
+        StdDraw.picture(this.xxPos, this.yyPos, ".\\images\\" +this.imgFileName);
     }
 
 }
