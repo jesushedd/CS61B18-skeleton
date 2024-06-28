@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class IntListTest {
@@ -25,6 +26,28 @@ public class IntListTest {
         IntList L = IntList.of(1, 2, 3);
         IntList.dSquareList(L);
         assertEquals(IntList.of(1, 4, 9), L);
+    }
+
+    @Test
+    public void testReverse(){
+        /*Test normal behavior*/
+        IntList input =  IntList.of(1,5,9,7,2,3,4);
+        IntList cpy = IntList.copyIntList(input);
+
+
+        IntList expected = IntList.of(4, 3,2,7,9,5,1);
+
+
+        IntList actual = IntList.reverse(input);
+        Assert.assertEquals(expected, actual);
+
+        /*Test destructive nature*/
+        Assert.assertNotEquals(input, cpy);
+
+        /*Test null input*/
+        assertNull(IntList.reverse(null));
+
+
     }
 
     /**
