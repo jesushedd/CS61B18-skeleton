@@ -11,11 +11,11 @@ public class IntList {
     /**
      * First element of list.
      */
-    public int first;
+    private int first;
     /**
      * Remaining elements of list.
      */
-    public IntList rest;
+    private IntList rest;
 
     /**
      * A List with first FIRST0 and rest REST0.
@@ -81,20 +81,20 @@ public class IntList {
      * *  elements of B.  May modify items of A. Don't use 'new'.
      */
 
-    private static IntList copyIntList(IntList L){
+    public static IntList copyIntList(IntList L) {
         if (L == null) {
             return null;
         }
         return new IntList(L.first, copyIntList(L.rest));
     }
 
-    private static IntList getLastNode(IntList L){
+    private static IntList getLastNode(IntList L) {
         while (L.rest != null) {
             L = L.rest;
         }
         return L;
     }
-    
+
     public static IntList dcatenate(IntList A, IntList B) {
         //
         IntList copyB = copyIntList(B);
@@ -115,6 +115,36 @@ public class IntList {
         lastNodeOfCopyA.rest = copyB;
         return copyA;
     }
+
+    /**
+     * Returns the reverse of the given IntList.
+     * This method is destructive. If given null
+     * as an input, returns null.
+     */
+    public static IntList reverse(IntList A) {
+        int lastItem;
+        if (A == null) {
+            return null;
+        }
+        //if list is just 1 item long
+        if (A.rest == null) {
+            return A;
+        }
+        // get last element
+        IntList cursor = A;
+        while (cursor.rest.rest != null) {
+            cursor = cursor.rest;
+        }
+        lastItem = cursor.rest.first;
+        cursor.rest = null;
+
+        //create recursively IntList with lasts element first
+        return new IntList(lastItem, reverse(A));
+
+    }
+
+
+
 
 
 
