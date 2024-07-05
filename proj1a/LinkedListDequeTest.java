@@ -30,13 +30,12 @@ public class LinkedListDequeTest {
 	}
 
 	/** Adds a few things to the list, checking isEmpty() and size() are correct, 
-	  * finally printing the results. 
-	  *
+	  * finally printing the results.
 	  * && is the "and" operation. */
 	public static void addIsEmptySizeTest() {
 		System.out.println("Running add/isEmpty/Size test.");
 		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-		/*
+
 		LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
 
 		boolean passed = checkEmpty(true, lld1.isEmpty());
@@ -58,7 +57,7 @@ public class LinkedListDequeTest {
 		lld1.printDeque();
 
 		printTestStatus(passed);
-		*/
+
 	}
 
 	/** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
@@ -67,7 +66,7 @@ public class LinkedListDequeTest {
 		System.out.println("Running add/remove test.");
 
 		System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-		/*
+
 		LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
 		// should be empty 
 		boolean passed = checkEmpty(true, lld1.isEmpty());
@@ -81,12 +80,59 @@ public class LinkedListDequeTest {
 		passed = checkEmpty(true, lld1.isEmpty()) && passed;
 
 		printTestStatus(passed);
-		*/
+
+	}
+
+	public static void getTest(){
+		System.out.println("Running get test.");
+		boolean passed ;
+		LinkedListDeque<Integer> integerList = new LinkedListDeque<Integer>();
+		if (integerList.get(0) == null){
+			passed = true;
+		} else {
+			passed = false;
+			System.out.println("get(0) returns failed. Expected: 'null', Actual: " + integerList.get(0));
+		}
+		integerList.addFirst(0);
+		integerList.addLast(10);
+		integerList.addLast(20);
+		integerList.addLast(30);
+
+
+		if (integerList.get(0) == 0){
+			passed =  true;
+		}
+		if (integerList.get(3) == 30){
+			passed = true;
+		} else {
+			passed = false;
+			System.out.println("get(3) returns failed. Expected: (30), Actual: " + integerList.get(3));
+		}
+
+		if (integerList.get(1) == 10){
+			passed = true;
+		} else {
+			passed = false;
+			System.out.println("get(1) returns failed. Expected: (10), Actual: " + integerList.get(1));
+		}
+
+		if (integerList.get(100) == null){
+			passed = true;
+		} else {
+			passed = false;
+			System.out.println("get(100) returns failed. Expected: 'null', Actual: " + integerList.get(100));
+		}
+
+		printTestStatus(passed);
+
 	}
 
 	public static void main(String[] args) {
 		System.out.println("Running tests.\n");
+		checkEmpty(true, false);
+		printTestStatus(true);
 		addIsEmptySizeTest();
 		addRemoveTest();
+		getTest();
 	}
 } 
