@@ -93,6 +93,11 @@ public class LinkedListDeque <T>{
 
     /*Get item at ith index*/
     public T get(int index){
+
+        if (index < 0){
+            System.out.println("LOL index can't be negative number");
+            return null;
+        }
         if (isEmpty()){
             return null;
         }
