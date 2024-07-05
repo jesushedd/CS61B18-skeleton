@@ -123,6 +123,14 @@ public class LinkedListDequeTest {
 			System.out.println("get(100) returns failed. Expected: 'null', Actual: " + integerList.get(100));
 		}
 
+		Integer nose = integerList.get(-100);
+		if (nose == null){
+			passed = true;
+		} else {
+			passed = false;
+			System.out.println("get(-100) returns failed. Expected: 'null', Actual: " + integerList.get(-100));
+		}
+
 		printTestStatus(passed);
 
 	}
