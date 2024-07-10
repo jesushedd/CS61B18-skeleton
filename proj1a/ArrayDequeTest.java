@@ -40,6 +40,21 @@ public class ArrayDequeTest {
         } else {
             System.out.println("get(6) returned " + actual + " Expected: " +expected);
         }
+    }
+
+    public static void testAddLast(){
+        ArrayDeque<String> dq = new ArrayDeque<String >();
+        dq.addLast("Primero");
+        dq.addLast("Segundo");
+        dq.addLast("Tercero");
+        String actual = dq.get(2);
+        String expected = "Tercero";
+
+        if (expected.equals(actual)){
+            System.out.println("Test addLast() , get(i) Passed!!");
+        } else {
+            System.out.println("get(2) returned " + actual + " Expected: " +expected);
+        }
 
     }
 
@@ -47,6 +62,7 @@ public class ArrayDequeTest {
     public static void main(String[] args) {
         testEmpty();
         testAddFirst();
+        testAddLast();
 
 
     }
