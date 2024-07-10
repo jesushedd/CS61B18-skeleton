@@ -27,12 +27,7 @@ public class ArrayDeque <T> {
         /*TODO
         //check if full
             //if full resize()*/
-        int prevIndex = front - 1;
-        if (prevIndex < 0){
-            front = items.length + prevIndex;
-        } else {
-            front = prevIndex;
-        }
+        front = (front - 1 + items.length) % items.length;
         items[front] = item;
     }
 
@@ -40,6 +35,8 @@ public class ArrayDeque <T> {
         //check if empty
         if (isEmpty()){
             front = rear = 0;
+            items[rear] = item;
+            return;
         }
         //TODO
         //check if full
