@@ -9,6 +9,18 @@ public class ArrayDequeTest {
         }
     }
 
+    /*
+    public static void testFull(){
+        ArrayDeque<String> dq = new ArrayDeque<String>();
+        for (int i = 0; i < 8 ; i++) {
+            String toAdd = String.valueOf(i);
+            dq.addLast(toAdd);
+        }
+
+        boolean expected = true;
+        boolean actual = dq.isFull();
+    }*/
+
 
     public static void testAddFirst(){
         ArrayDeque<String> dq = new ArrayDeque<String>();
@@ -55,6 +67,69 @@ public class ArrayDequeTest {
         } else {
             System.out.println("get(2) returned " + actual + " Expected: " +expected);
         }
+    }
+
+
+    public static void testRemoveFirst(){
+        System.out.println("Testing removeFirst()...");
+        ArrayDeque<String> dq = new ArrayDeque<String>();
+        for (int i = 0; i < 8 ; i++) {
+            String toAdd = String.valueOf(i);
+            dq.addLast(toAdd);
+        }
+        dq.removeFirst();
+        dq.removeFirst();
+        String expected = "2";
+        String actual = dq.removeFirst();
+        if (expected.equals(actual)){
+            System.out.println("Test removeFirst() ,  Passed!!");
+        } else {
+            System.out.println("removeFirst() returned " + actual + " Expected: " + expected);
+        }
+
+    }
+
+    public static void testPrint(){
+        ArrayDeque<String> dq = new ArrayDeque<String>();
+        //fill deque
+        for (int i = 0; i < 8 ; i++) {
+            String toAdd = String.valueOf(i);
+            dq.addLast(toAdd);
+            if (i==3){
+                System.out.println("Printing full deque with first 4 items added");
+                dq.printDeque();
+            }
+        }
+        System.out.println("Printing full deque with all 8 items added");
+        dq.printDeque();
+
+
+        System.out.println("test print non continuous array...");
+        dq.removeFirst();
+        dq.removeFirst();
+        dq.addLast("8");
+        dq.addLast("9");
+        dq.printDeque();
+    }
+
+    public void testRemoveLast(){
+        System.out.println("Testing removeLast()....");
+        ArrayDeque<String> dq = new ArrayDeque<String>();
+        //fill deque
+        for (int i = 0; i < 8 ; i++) {
+            String toAdd = String.valueOf(i);
+            dq.addLast(toAdd);
+        }
+        dq.removeLast();
+        dq.removeLast();
+        String actual =  dq.removeLast();
+        String expected = "5";
+        if (expected.equals(actual)){
+            System.out.println("Test removeLast() ,  Passed!!");
+        } else {
+            System.out.println("Fail!!!. removeLast() returned " + actual + " Expected: " + expected);
+        }
+
 
     }
 
@@ -63,6 +138,8 @@ public class ArrayDequeTest {
         testEmpty();
         testAddFirst();
         testAddLast();
+        testPrint();
+        testRemoveFirst();
 
 
     }
