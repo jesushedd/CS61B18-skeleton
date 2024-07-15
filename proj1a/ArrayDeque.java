@@ -69,24 +69,30 @@ public class ArrayDeque <T> {
 
 
 
-    //TODO
+    /*Print all content in deque*/
     public void printDeque(){
         int cursor = front;
-        while (cursor != next(rear)) {
+        for (int i = 0; i <= size ; i++, cursor=next(cursor)) {
             System.out.println(items[cursor]);
-            cursor = next(cursor);
         }
     }
 
-    //TODO
+    /*Returns first item(head,front)  from deque , deletes from array*/
     public T removeFirst(){
-
-        return  (T) (new  Object());
+        T item = items[front];//save front item
+        items[front] = null;//delete permanently front item from array
+        front = next(front);//update front index
+        size--;
+        return  item;
     }
 
-    //TODO
+    /*Returns last item(rear, tail)  from deque , deletes from array*/
     public T removeLast(){
-        return (T) (new Object());
+        T item = items[rear];
+        items[rear] = null;
+        rear = prev(rear);
+        size--;
+        return item;
     }
 
     public T get(int index){
