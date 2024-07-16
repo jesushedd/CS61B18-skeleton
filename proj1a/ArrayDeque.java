@@ -33,7 +33,7 @@ public class ArrayDeque <T> {
         if (isFull()){
             items = expand();
         }
-        front = prev(front);
+        front = prev(front);//previous, ensuring circular array
         items[front] = item;
         size++;
     }
@@ -57,19 +57,14 @@ public class ArrayDeque <T> {
         {
             items = expand();
         }
-        this.rear = next(rear);
+        this.rear = next(rear);//next, ensuring circular array
         items[rear] = item;
         size ++;
 
     }
 
 
-    private void resize(){
-
-
-    }
-
-    /*Resize the items array to twice it's current length
+    /*Returns a resized array to twice the items current length
     * The items are arranged in the new array starting at 0 index(front) and end at size - 1 index(rear), regardless of original index*/
     private T[] expand(){
         T[] resized = (T[]) new Object[2 * items.length];
@@ -82,8 +77,15 @@ public class ArrayDeque <T> {
         return resized;
     }
 
-    private void shrink(){
-
+    private T[] shrink(){
+        T[] resized = (T[]) new Object[items.length / 2];
+        int cursor = front;
+        for (int i = 0; i < size; i++, cursor = next(cursor)) {
+            resized[i] = items[cursor];
+        }
+        front = 0;
+        rear = size - 1;
+        return resized;
     }
 
     private boolean isFull(){
@@ -117,19 +119,41 @@ public class ArrayDeque <T> {
 
     /*Returns first item(head,front)  from deque , deletes from array*/
     public T removeFirst(){
+        if (isEmpty()){
+            return null;
+        }
         T item = items[front];//save front item
         items[front] = null;//delete permanently front item from array
-        front = next(front);//update front index
+        if (size == 1){
+            front = rear = -1;
+        }
+        else {
+            front = next(front);//update front index
+        }
         size--;
+        if (getCurrentUsageFactor() < minUsageFactor && items.length >= 16){
+            items = shrink();
+        }
         return  item;
     }
 
     /*Returns last item(rear, tail)  from deque , deletes from array*/
     public T removeLast(){
+        if (isEmpty()){
+            return null;
+        }
         T item = items[rear];
         items[rear] = null;
-        rear = prev(rear);
+        if (size == 1) {
+            rear = front = -1;
+        }
+        else {
+            rear = prev(rear);
+        }
         size--;
+        if (getCurrentUsageFactor() < minUsageFactor && items.length >= 16){
+            items = shrink();
+        }
         return item;
     }
 
