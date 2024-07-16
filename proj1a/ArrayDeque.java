@@ -1,6 +1,11 @@
 public class ArrayDeque <T> {
     private T[] items;
 
+    private final double minUsageFactor = 0.25;
+    private double getCurrentUsageFactor(){
+        return (double) size / items.length;
+    }
+
     private int size;
 
     /*index of next left (front) item insertion*/
@@ -22,29 +27,62 @@ public class ArrayDeque <T> {
         if (isEmpty()){
             front = rear = 0;
             items[front] = item;
+            size++;
             return;
         }
-        /*TODO
-        //check if full
-            //if full resize()*/
+        if (isFull()){
+            items = expand();
+        }
         front = prev(front);
         items[front] = item;
         size++;
     }
 
+
+    public int size(){
+        return size;
+    }
+
+
+    /*Add an item to  next index of current rear item*/
     public void addLast(T item){
         //check if empty
         if (isEmpty()){
             front = rear = 0;
             items[rear] = item;
+            size++;
             return;
         }
-        //TODO
-        //check if full
-            //if full resize()
+        if (isFull())
+        {
+            items = expand();
+        }
         this.rear = next(rear);
         items[rear] = item;
         size ++;
+
+    }
+
+
+    private void resize(){
+
+
+    }
+
+    /*Resize the items array to twice it's current length
+    * The items are arranged in the new array starting at 0 index(front) and end at size - 1 index(rear), regardless of original index*/
+    private T[] expand(){
+        T[] resized = (T[]) new Object[2 * items.length];
+        int cursor = front;
+        for (int i = 0; i < size  ; i++, cursor = next(cursor)) {
+            resized[i] = items[cursor];
+        }
+        front = 0;
+        rear = size - 1;
+        return resized;
+    }
+
+    private void shrink(){
 
     }
 
@@ -72,7 +110,7 @@ public class ArrayDeque <T> {
     /*Print all content in deque*/
     public void printDeque(){
         int cursor = front;
-        for (int i = 0; i <= size ; i++, cursor=next(cursor)) {
+        for (int i = 0; i < size ; i++, cursor=next(cursor)) {
             System.out.println(items[cursor]);
         }
     }
