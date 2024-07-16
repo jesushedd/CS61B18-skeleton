@@ -33,11 +33,11 @@ public class LinkedListDeque <T>{
         Node<T> insert = new Node<T>(item, SentinelHead, SentinelHead.next);
         SentinelHead.next.prev = insert;
         SentinelHead.next = insert;
+        size++;
         /*Make SentinelTail.prev is pointing at this first item*/
-        if (isEmpty()){
+        if (size == 1){
             SentinelTail.prev = SentinelHead.next;
         }
-        size++;
     };
 
     /*Add an item at tail of the deque*/
@@ -45,13 +45,13 @@ public class LinkedListDeque <T>{
         Node<T> insert = new Node<T>(item, SentinelTail.prev, SentinelTail);
         SentinelTail.prev.next = insert;
         SentinelTail.prev = insert;
+        size++;
         /*Make SentinelHead.next is pointing at this first item*/
-        if (isEmpty()){
+        if (size == 1){
             SentinelHead.next = SentinelTail.prev;
         }
-        size++;
-
     }
+
     public boolean isEmpty(){
         return size == 0;
     }
@@ -71,6 +71,9 @@ public class LinkedListDeque <T>{
 
     /*Removes and returns the item at thr front of the deque, If no such item exists,returns null*/
     public T removeFirst(){
+        if (isEmpty()){
+            return null;
+        }
         /*store first node*/
         Node<T> front = SentinelHead.next;
         //make the second item the first one
@@ -82,11 +85,14 @@ public class LinkedListDeque <T>{
     }
 
     public T removeLast(){
+        if (isEmpty()){
+            return null;
+        }
         /*store last node*/
         Node<T> last = SentinelTail.prev;
         //make the second to last item the last one
         SentinelTail.prev = last.prev;
-        SentinelTail.next = SentinelTail;
+        SentinelTail.prev.next = SentinelTail;
 
         return last.item;
     }
@@ -104,7 +110,7 @@ public class LinkedListDeque <T>{
         Node<T> cursor = SentinelHead.next;
         while (index != 0)
         {
-            if (cursor.next == null){
+            if (cursor.next == null){ //cursor.next means it reaches SentinelTail Node
                 return null;
             }
             cursor = cursor.next;
