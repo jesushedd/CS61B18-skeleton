@@ -1,18 +1,36 @@
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestPalindrome {
-    /*// You must use this palindrome, and not instantiate
-    // new Palindromes, or the autograder might be upset.
+    // You must use this palindrome, and not instantiate
+    // new Palindromes, or the auto grader might be upset.
     static Palindrome palindrome = new Palindrome();
 
     @Test
     public void testWordToDeque() {
-        Deque d = palindrome.wordToDeque("persiflage");
+        Deque<Character> d = palindrome.wordToDeque("persiflage");
         String actual = "";
         for (int i = 0; i < "persiflage".length(); i++) {
             actual += d.removeFirst();
         }
         assertEquals("persiflage", actual);
-    } Uncomment this class once you've created your Palindrome class. */
+    } /*Uncomment this class once you've created your Palindrome class. */
+    @Test
+    public void testIsPalindrome() {
+        //Deque<Character> d = palindrome.wordToDeque("Unapalabrita");
+        assertFalse(palindrome.isPalindrome("Unapalabrita"));
+        assertFalse(palindrome.isPalindrome("cat"));
+        assertFalse(palindrome.isPalindrome("horoscopo"));
+        assertTrue(palindrome.isPalindrome("a"));
+        assertTrue(palindrome.isPalindrome("A"));
+        assertFalse(palindrome.isPalindrome("Aa"));
+        assertFalse(palindrome.isPalindrome("Kk"));
+        assertTrue(palindrome.isPalindrome(""));
+        assertTrue(palindrome.isPalindrome("0"));
+        assertTrue(palindrome.isPalindrome("racecar"));
+        assertTrue(palindrome.isPalindrome("noon"));
+        assertTrue(palindrome.isPalindrome("reconocer"));
+
+    }
 }
