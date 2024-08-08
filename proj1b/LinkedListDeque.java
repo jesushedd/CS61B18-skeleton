@@ -105,7 +105,7 @@ public class LinkedListDeque <T> implements Deque<T>{
         //make the second to last item the last one
         SentinelTail.prev = last.prev;
         SentinelTail.prev.next = SentinelTail;
-
+        size--;
         return last.item;
     }
 
