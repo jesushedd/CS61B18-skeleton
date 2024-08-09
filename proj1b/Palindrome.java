@@ -26,7 +26,7 @@ public class Palindrome {
         return word.equals(reversed);
     }
 
-    /*Returns true if a word is a palindrome by the CharacterComparator conditions given*/
+    /*Returns true if a word is a palindrome by the implemented CharacterComparator conditions given*/
     public boolean isPalindrome(String word, CharacterComparator cc){
         boolean isPalindrome = true;
         Character leftChar;
