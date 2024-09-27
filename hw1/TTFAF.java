@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.Base64;
 import java.util.zip.GZIPInputStream;
 
+
 /**
  * This code does some stuff. Run it (with sound on!) to find out what stuff it does!
  * Requires completion of CS 61B Homework 1.

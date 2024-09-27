@@ -1,3 +1,6 @@
+import java.util.Deque;
+import java.util.Stack;
+
 public class LinkedListDeque <T>{
 
     private static class Node<Algo>{

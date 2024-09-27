@@ -1,4 +1,4 @@
-public class ArrayDeque <T> {
+public class ArrayDeque<T> {
     private T[] items;
 
     private final double minUsageFactor = 0.25;

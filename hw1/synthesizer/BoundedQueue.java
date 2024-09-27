@@ -1,5 +1,8 @@
 package synthesizer;
-public interface BoundedQueue <T> {
+
+import java.util.Iterator;
+
+public interface BoundedQueue <T> extends Iterable<T> {
     //Return size of the buffer
     int capacity();
 
@@ -8,6 +11,8 @@ public interface BoundedQueue <T> {
 
     //add item x to the end
     void enqueue(T x);
+
+    Iterator<T> iterator();
 
     //Delete and return item from the front
     T dequeue();

@@ -135,6 +135,12 @@ public class LinkedListDequeTest {
 
 	}
 
+
+	public static void testRemove(){
+		LinkedListDeque<Integer> dq = new LinkedListDeque<Integer>();
+		Integer a =dq.removeFirst();
+	}
+
 	public static void main(String[] args) {
 		System.out.println("Running tests.\n");
 		checkEmpty(true, false);
@@ -142,5 +148,6 @@ public class LinkedListDequeTest {
 		addIsEmptySizeTest();
 		addRemoveTest();
 		getTest();
+		testRemove();
 	}
 } 

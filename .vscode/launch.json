@@ -1,0 +1,58 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "StdDrawDemo",
+            "request": "launch",
+            "mainClass": "StdDrawDemo",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "NBody",
+            "request": "launch",
+            "mainClass": "NBody",
+            "projectName": "",
+            "args": "10 1 E:\\OSSU\\programming\\CS61B_Spring_2018_java\\skeleton-sp18\\proj0\\data\\planets.txt"
+        },
+        {
+            "type": "java",
+            "name": "myDemo",
+            "request": "launch",
+            "mainClass": "myDemo",
+            "projectName": "",
+            "args": "Peru"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "GraphDBLauncher",
+            "request": "launch",
+            "mainClass": "GraphDBLauncher",
+            "projectName": "proj3"
+        },
+        {
+            "type": "java",
+            "name": "MapServer",
+            "request": "launch",
+            "mainClass": "MapServer",
+            "projectName": "proj3"
+        },
+        {
+            "type": "java",
+            "name": "CSCourseDB",
+            "request": "launch",
+            "mainClass": "example.CSCourseDB",
+            "projectName": "proj3"
+        }
+    ]
+}
