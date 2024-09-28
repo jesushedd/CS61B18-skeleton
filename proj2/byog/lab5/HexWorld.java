@@ -20,38 +20,35 @@ public class HexWorld {
     public static String nakedHex(char c, int side){
         StringBuilder hexagon = new StringBuilder();
         String unit = String.valueOf(c);
+        //hexagon.
 
-        int blanks = side -1; //first row ,number of blanks on each side
-        int rowWidth = side;
-        int addToBlanks = -1;
-        int addToRow = 2;
+
+        int start = side -1; //first row ,number of blanks on each side
+        int end = start + side - 1;
+        int moveStart = -1;
+        int moveEnd = 1;
+
+        int firstHalf = side -1;
+        int secondHalf = side;
 
         for (int i = 0; i < 2 * side; i++){
-            //append blanks
-            for (int j = 0; j < blanks; j++){
-                hexagon.append(" ");
-            }
-            //append unit
-            for (int k = 0; k < rowWidth; k++) {
-                hexagon.append(unit);
-            }
-            //append blanks again xd
-            for (int j = 0; j < blanks; j++){
-                hexagon.append(" ");
+
+            for (int a = 0; a < side + 2 * (side - 1) ; a++) {
+
+                if (start <= a & a <= end){
+                    hexagon.append(unit);
+                } else hexagon.append(" ");
             }
             hexagon.append("\n");
-
-            // update lengths for next row
-            if (i == side - 1 ){
+            if (i == firstHalf){
                 continue;
             }
-            if (i == side){
-                addToRow *= -1;
-                addToBlanks *= -1;
+            if (i == secondHalf){
+                moveStart = 1;
+                moveEnd = -1;
             }
-            blanks+=addToBlanks;
-            rowWidth+=addToRow;
-
+            start += moveStart;
+            end += moveEnd;
         }
         return hexagon.toString();
     }
@@ -97,16 +94,18 @@ public class HexWorld {
     }
 
     public static void main(String[] args) {
-        System.out.println(nakedHex('#', 3));
+        System.out.println(nakedHex('0', 9));
         TERenderer rendr = new TERenderer();
         rendr.initialize(60, 30);
 
         // initialize tiles
-        TETile[][] world = new TETile[100][200];
+        TETile[][] world = new TETile[200][400];
 
         fillVoids(world);
 
         addHexagon(world, 10,10,4, Tileset.MOUNTAIN);
+        addHexagon(world, 30, 10, 3,Tileset.FLOWER);
         rendr.renderFrame(world);
+
     }
 }
