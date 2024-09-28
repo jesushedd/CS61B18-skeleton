@@ -23,8 +23,8 @@ public class HexWorld {
         //hexagon.
 
 
-        int start = side -1; //first row ,number of blanks on each side
-        int end = start + side - 1;
+        int rowStart = side -1; //first row ,number of blanks on each side
+        int rowEnd = rowStart + side - 1;
         int moveStart = -1;
         int moveEnd = 1;
 
@@ -35,7 +35,7 @@ public class HexWorld {
 
             for (int a = 0; a < side + 2 * (side - 1) ; a++) {
 
-                if (start <= a & a <= end){
+                if (a >= rowStart & a <= rowEnd){
                     hexagon.append(unit);
                 } else hexagon.append(" ");
             }
@@ -47,8 +47,8 @@ public class HexWorld {
                 moveStart = 1;
                 moveEnd = -1;
             }
-            start += moveStart;
-            end += moveEnd;
+            rowStart += moveStart;
+            rowEnd += moveEnd;
         }
         return hexagon.toString();
     }
@@ -104,7 +104,8 @@ public class HexWorld {
         fillVoids(world);
 
         addHexagon(world, 10,10,4, Tileset.MOUNTAIN);
-        addHexagon(world, 30, 10, 3,Tileset.FLOWER);
+        addHexagon(world, 10, 10, 3,Tileset.FLOWER);
+        addHexagon(world, 1, 10, 2,Tileset.GRASS);
         rendr.renderFrame(world);
 
     }
