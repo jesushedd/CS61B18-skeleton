@@ -2,6 +2,8 @@ package byog.Core;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
+import byog.TileEngine.Tileset;
+import byog.algorithms.LinealGenerator;
 
 public class Game {
     TERenderer ter = new TERenderer();
@@ -9,10 +11,35 @@ public class Game {
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
 
+    private TETile[][] MAP;
+
+    private final int AREA = WIDTH * HEIGHT;
+
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
+        MAP = new TETile[WIDTH][HEIGHT];
+        fillVoids(MAP);
+        ter.initialize(WIDTH, HEIGHT);
+
+        LinealGenerator mapGenerator = new LinealGenerator(MAP, 67840);
+        while (mapGenerator.getUsedArea() < AREA * 2 / 3){
+            mapGenerator.setTiles();
+        }
+        ter.renderFrame(MAP);
+
+    }
+
+    private static void fillVoids(TETile[][] w){
+        int height = w[0].length;
+        int width = w.length;
+
+        for (int i = 0; i < width ; i++) {
+            for (int j = 0; j < height ; j++) {
+                w[i][j] = Tileset.NOTHING;
+            }
+        }
     }
 
     /**
