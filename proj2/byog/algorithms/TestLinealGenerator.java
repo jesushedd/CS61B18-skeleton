@@ -1,4 +1,4 @@
-package byog.Algorithms;
+package byog.algorithms;
 
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
@@ -23,7 +23,7 @@ public class TestLinealGenerator {
     @Test
     public void testMaxXY(){
         fillVoids(testWorld);
-        LinealGenerator lineaAlgo = new LinealGenerator(testWorld);
+        LinealGenerator lineaAlgo = new LinealGenerator(testWorld, 999);
 
         Assert.assertEquals(79, lineaAlgo.getMAX_X());
         Assert.assertEquals(29, lineaAlgo.getMAX_Y());
