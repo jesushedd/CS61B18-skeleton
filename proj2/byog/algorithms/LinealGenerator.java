@@ -8,6 +8,27 @@ import byog.algorithms.position.Position;
 import java.util.*;
 
 public class LinealGenerator {
+
+    private class TileGrower implements Runnable{
+
+        Position currentPosition;
+        TETile tileStyle;
+        public TileGrower(Position startingPosition, TETile predefinedTile){
+            currentPosition = startingPosition;
+            tileStyle = predefinedTile;
+        }
+
+        @Override
+        public void run(){
+            setNextPosition(currentPosition);
+            //set a selected in current position if not previously set to other tile
+            if (tileIsNothing(currentPosition)){
+                WORLD[wallPosition.getXxPosition()][wallPosition.getYyPosition()] = tileStyle;
+                usedArea++;
+            }
+        }
+    }
+
     private final Random random;
     final private int NUMBER_OF_SEEDS;
 
@@ -61,7 +82,8 @@ public class LinealGenerator {
         this.usedArea = 0;
 
         int numOfSeeds = (int) (AREA * SEEDS_PER_AREA);
-        this.NUMBER_OF_SEEDS =  numOfSeeds % 2 == 0  ?  numOfSeeds : numOfSeeds + 1;
+        numOfSeeds = numOfSeeds % 2 == 0  ?  numOfSeeds : numOfSeeds + 1;
+        this.NUMBER_OF_SEEDS =  numOfSeeds / 2;
         System.out.println("Lineal Generator started with : " + NUMBER_OF_SEEDS + " seeds for each tile" );
 
         this.MAX_X = inWorld.length - 1;
@@ -75,21 +97,36 @@ public class LinealGenerator {
     public void setTiles(){
         //Check all tiles are initialized
          if (wallPosition == null | floorPosition == null){
-             for (int i = 0; i < NUMBER_OF_SEEDS; i++) {
+             for (int i = 0; i < NUMBER_OF_SEEDS ; i++) {
                  setTileSeeds();
              }
          }
-         setNextPosition(wallPosition);
-         //set a Wall tile if not previously set to other tile
-         if (tileIsNothing(wallPosition)){
-             WORLD[wallPosition.getXxPosition()][wallPosition.getYyPosition()] = Tileset.WALL;
-             usedArea++;
-         }
-         //set a  Floor tile if not previously set to other tile
-         setNextPosition(floorPosition);
-         if (tileIsNothing(floorPosition)){
-            WORLD[floorPosition.getXxPosition()][floorPosition.getYyPosition()] = Tileset.FLOOR;
-            usedArea++;
+
+         Thread[] threadsForFloors = new Thread[NUMBER_OF_SEEDS ];
+         Thread[] threadsForWalls = new Thread[NUMBER_OF_SEEDS ];
+
+
+        for (int i = 0; i < NUMBER_OF_SEEDS ; i++) {
+            threadsForFloors[i] = new Thread(new TileGrower(seedsOfFloor.get(i), Tileset.FLOOR));
+        }
+
+        for (int i = 0; i < NUMBER_OF_SEEDS ; i++) {
+            threadsForWalls[i] = new Thread(new TileGrower(seedsOfWall.get(i), Tileset.WALL));
+        }
+
+        for (int i = 0; i < NUMBER_OF_SEEDS ; i++) {
+            threadsForFloors[i].start();
+            threadsForWalls[i].start();
+        }
+
+        for (int i = 0; i < NUMBER_OF_SEEDS ; i++) {
+            try {
+                threadsForFloors[i].join();
+                threadsForWalls[i].join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
         }
         
     }
@@ -149,7 +186,6 @@ public class LinealGenerator {
             xFloorPos = RandomUtils.uniform(random, MAX_X + 1);
             yFloorPos = RandomUtils.uniform(random, MAX_Y + 1);
         }
-
 
 
 
