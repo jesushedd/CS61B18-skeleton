@@ -5,10 +5,7 @@ import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 import byog.algorithms.position.Position;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class LinealGenerator {
     private final Random random;
@@ -38,6 +35,8 @@ public class LinealGenerator {
 
     private int usedArea;
 
+    private final List<Position> seedsOfWall = new ArrayList<>();
+    private final List<Position> seedsOfFloor = new ArrayList<>();
     public int getUsedArea(){
         return usedArea;
     }
@@ -74,19 +73,21 @@ public class LinealGenerator {
     }
 
     public void setTiles(){
+        //Check all tiles are initialized
          if (wallPosition == null | floorPosition == null){
              for (int i = 0; i < NUMBER_OF_SEEDS; i++) {
                  setTileSeeds();
              }
          }
          setNextPosition(wallPosition);
+         //set a Wall tile if not previously set to other tile
          if (tileIsNothing(wallPosition)){
              WORLD[wallPosition.getXxPosition()][wallPosition.getYyPosition()] = Tileset.WALL;
              usedArea++;
          }
-
-        setNextPosition(floorPosition);
-        if (tileIsNothing(floorPosition)){
+         //set a  Floor tile if not previously set to other tile
+         setNextPosition(floorPosition);
+         if (tileIsNothing(floorPosition)){
             WORLD[floorPosition.getXxPosition()][floorPosition.getYyPosition()] = Tileset.FLOOR;
             usedArea++;
         }
@@ -154,11 +155,13 @@ public class LinealGenerator {
 
 
         wallPosition = new Position(xWallPos, yWallPos);
-        floorPosition = new Position(xFloorPos, yFloorPos);
-
+        seedsOfWall.add(wallPosition);
         WORLD[wallPosition.getXxPosition()][wallPosition.getYyPosition()] = Tileset.WALL;
         usedArea++;
 
+
+        floorPosition = new Position(xFloorPos, yFloorPos);
+        seedsOfFloor.add(floorPosition);
         WORLD[floorPosition.getXxPosition()][floorPosition.getYyPosition()] = Tileset.FLOOR;
         usedArea++;
 

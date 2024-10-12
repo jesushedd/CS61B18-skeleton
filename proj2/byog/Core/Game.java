@@ -23,9 +23,10 @@ public class Game {
         fillVoids(MAP);
         ter.initialize(WIDTH, HEIGHT);
 
-        LinealGenerator mapGenerator = new LinealGenerator(MAP, 67840);
+        LinealGenerator mapGenerator = new LinealGenerator(MAP, 0);
         while (mapGenerator.getUsedArea() < AREA * 2 / 3){
             mapGenerator.setTiles();
+            ter.renderFrame(MAP);
         }
         ter.renderFrame(MAP);
 
