@@ -6,6 +6,7 @@ import byog.TileEngine.Tileset;
 import byog.algorithms.position.Position;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class LinealGenerator {
 
@@ -19,14 +20,19 @@ public class LinealGenerator {
         }
 
         @Override
-        public void run(){
+        public  void run(){
+        synchronized (LinealGenerator.this){
             setNextPosition(currentPosition);
-            //set a selected in current position if not previously set to other tile
-            if (tileIsNothing(currentPosition)){
-                WORLD[wallPosition.getXxPosition()][wallPosition.getYyPosition()] = tileStyle;
-                usedArea++;
-            }
-        }
+                //set a selected in current position if not previously set to other tile
+                if (tileIsNothing(currentPosition)) {
+
+                        WORLD[currentPosition.getXxPosition()][currentPosition.getYyPosition()] = tileStyle;
+                        System.out.println("llenado en" + currentPosition.getXxPosition() + ", " + currentPosition.getYyPosition());
+                        usedArea++;
+                    }
+
+
+        }}
     }
 
     private final Random random;
@@ -34,7 +40,7 @@ public class LinealGenerator {
 
     final private TETile[][] WORLD;
 
-    final private float SEEDS_PER_AREA = 10f/2400;
+    final private float SEEDS_PER_AREA = 1000f/2400;
 
     final private int MAX_X;
     public int getMAX_X(){
@@ -137,7 +143,7 @@ public class LinealGenerator {
         int currentY = currentPosition.getYyPosition();
 
         List<String> possibleDirections = new java.util.ArrayList<>(List.of("UP", "DOWN", "LEFT", "RIGHT"));
-
+        /*
         if ( currentY == MAX_Y){
             possibleDirections.remove("UP");
         } else if (currentY == MIN_Y) {
@@ -148,14 +154,14 @@ public class LinealGenerator {
             possibleDirections.remove("RIGHT");
         } else if (currentX == MIN_X) {
             possibleDirections.remove("LEFT");
-        }
+        }*/
 
         int idx = RandomUtils.uniform(random, possibleDirections.size());
         String nextDirection = possibleDirections.get(idx);
 
         switch (nextDirection){
             case "UP":
-                currentPosition.moveUp();
+                currentPosition.moveUp(MAX_Y);
                 break;
             case "DOWN":
                 currentPosition.moveDown();
@@ -164,7 +170,7 @@ public class LinealGenerator {
                 currentPosition.moveLeft();
                 break;
             case "RIGHT":
-                currentPosition.moveRight();
+                currentPosition.moveRight(MAX_X);
                 break;
         }
 
@@ -193,12 +199,14 @@ public class LinealGenerator {
         wallPosition = new Position(xWallPos, yWallPos);
         seedsOfWall.add(wallPosition);
         WORLD[wallPosition.getXxPosition()][wallPosition.getYyPosition()] = Tileset.WALL;
+        System.out.println("LLenado en " +wallPosition.getXxPosition() +", " + wallPosition.getYyPosition());
         usedArea++;
 
 
         floorPosition = new Position(xFloorPos, yFloorPos);
         seedsOfFloor.add(floorPosition);
         WORLD[floorPosition.getXxPosition()][floorPosition.getYyPosition()] = Tileset.FLOOR;
+        System.out.println("LLenado en " +floorPosition.getXxPosition() +", " + floorPosition.getYyPosition());
         usedArea++;
 
 
@@ -206,10 +214,24 @@ public class LinealGenerator {
     }
 
 
-    private boolean tileIsNothing(Position current){
+    private synchronized boolean tileIsNothing(Position current){
         return WORLD[current.getXxPosition()][current.getYyPosition()] == Tileset.NOTHING;
 
     }
+
+    public Map<Integer, Integer> getFinalCount(){
+        Map<Integer, Integer> map = new HashMap<>();
+        int count = 0;
+        for (int i=0; i < WORLD.length; i++) {
+            for (int j = 0; j < WORLD[0].length; j++) {
+                if (WORLD[i][j] == Tileset.NOTHING){
+                    map.put(i,j);
+                }
+            }
+        }
+        return map;
+    }
+
 
 
 
