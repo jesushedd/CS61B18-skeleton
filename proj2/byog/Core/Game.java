@@ -8,8 +8,8 @@ import byog.algorithms.LinealGenerator;
 public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
-    public static final int WIDTH = 80;
-    public static final int HEIGHT = 30;
+    public static final int WIDTH = 40;
+    public static final int HEIGHT = 15;
 
     private TETile[][] MAP;
 
@@ -23,12 +23,16 @@ public class Game {
         fillVoids(MAP);
         ter.initialize(WIDTH, HEIGHT);
 
-        LinealGenerator mapGenerator = new LinealGenerator(MAP, 0);
-        while (mapGenerator.getUsedArea() < AREA * 2 / 3){
+        LinealGenerator mapGenerator = new LinealGenerator(MAP, 25);
+        while (mapGenerator.getUsedArea() <  AREA  ){
+            System.out.println(mapGenerator.getUsedArea());
             mapGenerator.setTiles();
             ter.renderFrame(MAP);
         }
         ter.renderFrame(MAP);
+        System.out.println("Listo! " + mapGenerator.getFinalCount());
+        System.out.println(mapGenerator.getUsedArea());
+
 
     }
 
