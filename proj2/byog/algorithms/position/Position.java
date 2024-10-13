@@ -27,19 +27,31 @@ public class Position {
 
 
 
-    public void moveUp(){
+    public void moveUp(int maxY){
+        if (yyPosition == maxY){
+            return;
+        }
         yyPosition++;
     }
 
     public void moveDown(){
+        if (yyPosition == 0){
+            return;
+        }
         yyPosition--;
     }
 
     public void moveLeft(){
+        if (xxPosition == 0){
+            return;
+        }
         xxPosition--;
     }
 
-    public void moveRight(){
+    public void moveRight(int maxX){
+        if (xxPosition == maxX){
+            return;
+        }
         xxPosition++;
     }
 }
