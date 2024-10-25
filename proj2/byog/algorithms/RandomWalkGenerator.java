@@ -165,7 +165,7 @@ public class RandomWalkGenerator {
         int currentY = currentPosition.getYyPosition();
 
         List<String> possibleDirections = new java.util.ArrayList<>(List.of("UP", "DOWN", "LEFT", "RIGHT"));
-        /*
+
         if ( currentY == MAX_Y){
             possibleDirections.remove("UP");
         } else if (currentY == MIN_Y) {
@@ -176,7 +176,7 @@ public class RandomWalkGenerator {
             possibleDirections.remove("RIGHT");
         } else if (currentX == MIN_X) {
             possibleDirections.remove("LEFT");
-        }*/
+        }
 
         int idx = RandomUtils.uniform(random, possibleDirections.size());
         String nextDirection = possibleDirections.get(idx);
