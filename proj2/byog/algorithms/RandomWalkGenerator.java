@@ -7,17 +7,26 @@ import byog.algorithms.position.Position;
 
 import java.util.*;
 
+
 public class RandomWalkGenerator {
 
+    // Represents a tile "grower" thread to randomly extend from a starting tile.
+    // This class moves from the starting position to adjacent positions and sets a tile if the position is empty.
     private class TileGrower implements Runnable{
 
         final Position currentPosition;
         TETile tileStyle;
+
+        // Represents a tile "grower" thread to randomly extend from a starting tile.
+        // This class moves from the starting position to adjacent positions and sets a tile if the position is empty.
         public TileGrower(Position startingPosition, TETile predefinedTile){
             currentPosition = startingPosition;
             tileStyle = predefinedTile;
         }
 
+
+        // Sets the tile at the current position if it is empty, and increments the used area counter.
+        // This operation is synchronized to avoid concurrent modifications on the WORLD tile map.
         @Override
         public  void run(){
 
@@ -78,6 +87,8 @@ public class RandomWalkGenerator {
 
 
 
+    // Constructor to initialize RandomWalkGenerator with the provided tile map (WORLD) and seed.
+    // It calculates the total number of tile seeds based on the world area and the defined seed density.
 
     public RandomWalkGenerator(TETile[][] inWorld, long seed){
         for (TETile[] yTeTiles : inWorld) {
@@ -104,6 +115,8 @@ public class RandomWalkGenerator {
 
     }
 
+    // Sets tiles in the world based on the wall and floor seeds.
+    // This method uses threads to concurrently "grow" tiles from each seed point.
     public void setTiles(){
         //Check all tiles are initialized
          if (wallPosition == null | floorPosition == null){
@@ -144,6 +157,8 @@ public class RandomWalkGenerator {
         
     }
 
+    // Generates a new position for a tile growth step, moving in a random direction (up, down, left, or right).
+    // This ensures tile growth stays within the world's boundaries.
     private void setNextPosition(Position currentPosition){
 
         int currentX = currentPosition.getXxPosition();
@@ -184,7 +199,8 @@ public class RandomWalkGenerator {
     }
 
 
-
+    // Initializes random seed positions for wall and floor tiles, ensuring they are distinct.
+    // Each seed point is added to its respective list and updated in the WORLD tile map.
     private void setTileSeeds(){
         int xWallPos = 0;
         int yWallPos = 0;
@@ -229,7 +245,8 @@ public class RandomWalkGenerator {
 
     }
 
-
+    // Checks if the tile at the specified position is empty (equals Tileset.NOTHING).
+    // This method is used to determine if a tile can be set at a particular position.
     private boolean tileIsNothing(Position current){
         return WORLD[current.getXxPosition()][current.getYyPosition()] == Tileset.NOTHING;
 
