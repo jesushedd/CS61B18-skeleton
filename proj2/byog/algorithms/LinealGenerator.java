@@ -12,7 +12,7 @@ public class LinealGenerator {
 
     private class TileGrower implements Runnable{
 
-        Position currentPosition;
+        final Position currentPosition;
         TETile tileStyle;
         public TileGrower(Position startingPosition, TETile predefinedTile){
             currentPosition = startingPosition;
@@ -21,18 +21,23 @@ public class LinealGenerator {
 
         @Override
         public  void run(){
-        synchronized (LinealGenerator.this){
+
+
             setNextPosition(currentPosition);
+            int x = currentPosition.getXxPosition();
+            int y = currentPosition.getYyPosition();
+            synchronized (LinealGenerator.this) {
                 //set a selected in current position if not previously set to other tile
                 if (tileIsNothing(currentPosition)) {
 
-                        WORLD[currentPosition.getXxPosition()][currentPosition.getYyPosition()] = tileStyle;
-                        System.out.println("llenado en" + currentPosition.getXxPosition() + ", " + currentPosition.getYyPosition());
-                        usedArea++;
-                    }
+                    WORLD[x][y] = tileStyle;
+                    //System.out.println("llenado en" + currentPosition.getXxPosition() + ", " + currentPosition.getYyPosition());
+                    usedArea++;
 
+                }
+            }
 
-        }}
+        }
     }
 
     private final Random random;
@@ -40,7 +45,7 @@ public class LinealGenerator {
 
     final private TETile[][] WORLD;
 
-    final private float SEEDS_PER_AREA = 1000f/2400;
+    final private float SEEDS_PER_AREA = 20f/2400;
 
     final private int MAX_X;
     public int getMAX_X(){
@@ -108,16 +113,19 @@ public class LinealGenerator {
              }
          }
 
+         int countOfWallSeeds = seedsOfWall.size();
+         int countOfFloorSeeds = seedsOfFloor.size();
+
          Thread[] threadsForFloors = new Thread[NUMBER_OF_SEEDS ];
          Thread[] threadsForWalls = new Thread[NUMBER_OF_SEEDS ];
 
 
         for (int i = 0; i < NUMBER_OF_SEEDS ; i++) {
-            threadsForFloors[i] = new Thread(new TileGrower(seedsOfFloor.get(i), Tileset.FLOOR));
+            threadsForFloors[i] = new Thread(this.new TileGrower(this.seedsOfFloor.get(i),Tileset.GRASS));
         }
 
         for (int i = 0; i < NUMBER_OF_SEEDS ; i++) {
-            threadsForWalls[i] = new Thread(new TileGrower(seedsOfWall.get(i), Tileset.WALL));
+            threadsForWalls[i] = new Thread(this.new TileGrower(this.seedsOfWall.get(i), Tileset.WALL));
         }
 
         for (int i = 0; i < NUMBER_OF_SEEDS ; i++) {
@@ -198,38 +206,47 @@ public class LinealGenerator {
 
         wallPosition = new Position(xWallPos, yWallPos);
         seedsOfWall.add(wallPosition);
-        WORLD[wallPosition.getXxPosition()][wallPosition.getYyPosition()] = Tileset.WALL;
-        System.out.println("LLenado en " +wallPosition.getXxPosition() +", " + wallPosition.getYyPosition());
-        usedArea++;
+
+        if (!tileIsNothing(wallPosition)){
+            usedArea--;
+        }
+            WORLD[wallPosition.getXxPosition()][wallPosition.getYyPosition()] = Tileset.WALL;
+            //System.out.println("LLenado en " +wallPosition.getXxPosition() +", " + wallPosition.getYyPosition());
+            usedArea++;
+
 
 
         floorPosition = new Position(xFloorPos, yFloorPos);
-        seedsOfFloor.add(floorPosition);
-        WORLD[floorPosition.getXxPosition()][floorPosition.getYyPosition()] = Tileset.FLOOR;
-        System.out.println("LLenado en " +floorPosition.getXxPosition() +", " + floorPosition.getYyPosition());
-        usedArea++;
+        if (!tileIsNothing(floorPosition)) {
+            usedArea--;
+        }
+            seedsOfFloor.add(floorPosition);
+            WORLD[floorPosition.getXxPosition()][floorPosition.getYyPosition()] = Tileset.FLOOR;
+            //System.out.println("LLenado en " + floorPosition.getXxPosition() + ", " + floorPosition.getYyPosition());
+            usedArea++;
+
 
 
 
     }
 
 
-    private synchronized boolean tileIsNothing(Position current){
+    private boolean tileIsNothing(Position current){
         return WORLD[current.getXxPosition()][current.getYyPosition()] == Tileset.NOTHING;
 
     }
 
-    public Map<Integer, Integer> getFinalCount(){
-        Map<Integer, Integer> map = new HashMap<>();
+    public Set<String> getFinalCount(){
+        Set<String> wea = new HashSet<>();
         int count = 0;
         for (int i=0; i < WORLD.length; i++) {
             for (int j = 0; j < WORLD[0].length; j++) {
                 if (WORLD[i][j] == Tileset.NOTHING){
-                    map.put(i,j);
+                    wea.add(String.valueOf(i)+"-"+String.valueOf(j));
                 }
             }
         }
-        return map;
+        return wea;
     }
 
 
