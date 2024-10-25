@@ -23,7 +23,7 @@ public class TestLinealGenerator {
     @Test
     public void testMaxXY(){
         fillVoids(testWorld);
-        LinealGenerator lineaAlgo = new LinealGenerator(testWorld, 999);
+        RandomWalkGenerator lineaAlgo = new RandomWalkGenerator(testWorld, 999);
 
         Assert.assertEquals(79, lineaAlgo.getMAX_X());
         Assert.assertEquals(29, lineaAlgo.getMAX_Y());

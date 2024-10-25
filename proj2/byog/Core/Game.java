@@ -3,7 +3,7 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
-import byog.algorithms.LinealGenerator;
+import byog.algorithms.RandomWalkGenerator;
 
 public class Game {
     TERenderer ter = new TERenderer();
@@ -23,7 +23,7 @@ public class Game {
         fillVoids(MAP);
         ter.initialize(WIDTH, HEIGHT);
 
-        LinealGenerator mapGenerator = new LinealGenerator(MAP, 25);
+        RandomWalkGenerator mapGenerator = new RandomWalkGenerator(MAP, 25);
         while (mapGenerator.getUsedArea() <  AREA  ){
             System.out.println(mapGenerator.getUsedArea());
             mapGenerator.setTiles();

@@ -6,9 +6,8 @@ import byog.TileEngine.Tileset;
 import byog.algorithms.position.Position;
 
 import java.util.*;
-import java.util.function.Predicate;
 
-public class LinealGenerator {
+public class RandomWalkGenerator {
 
     private class TileGrower implements Runnable{
 
@@ -26,7 +25,7 @@ public class LinealGenerator {
             setNextPosition(currentPosition);
             int x = currentPosition.getXxPosition();
             int y = currentPosition.getYyPosition();
-            synchronized (LinealGenerator.this) {
+            synchronized (RandomWalkGenerator.this) {
                 //set a selected in current position if not previously set to other tile
                 if (tileIsNothing(currentPosition)) {
 
@@ -80,7 +79,7 @@ public class LinealGenerator {
 
 
 
-    public LinealGenerator(TETile[][] inWorld, long seed){
+    public RandomWalkGenerator(TETile[][] inWorld, long seed){
         for (TETile[] yTeTiles : inWorld) {
             if (Arrays.stream(yTeTiles).anyMatch(Objects::isNull)) {
                 throw new IllegalArgumentException("All tiles should be non null");
