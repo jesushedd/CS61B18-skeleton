@@ -3,13 +3,13 @@ package byog.algorithms;
 import byog.Core.RandomUtils;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
-import byog.TileMatrixHelpers;
+import byog.Core.TileMatrixHelpers;
 import byog.algorithms.position.Position;
 
 import java.util.*;
 
 
-public class RandomWalkGenerator {
+public class RandomWalkGenerator implements GenAlgorithm {
 
     // Represents a tile "grower" thread to randomly extend from a starting tile.
     // This class moves from the starting position to adjacent positions and sets a tile if the position is empty.
