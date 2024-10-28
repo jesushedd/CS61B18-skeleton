@@ -3,6 +3,7 @@ package byog.algorithms;
 import byog.Core.RandomUtils;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
+import byog.TileMatrixHelpers;
 import byog.algorithms.position.Position;
 
 import java.util.*;
@@ -91,11 +92,11 @@ public class RandomWalkGenerator {
     // It calculates the total number of tile seeds based on the world area and the defined seed density.
 
     public RandomWalkGenerator(TETile[][] inWorld, long seed){
-        for (TETile[] yTeTiles : inWorld) {
-            if (Arrays.stream(yTeTiles).anyMatch(Objects::isNull)) {
-                throw new IllegalArgumentException("All tiles should be non null");
-            }
+        if (TileMatrixHelpers.anyTilesIsNull(inWorld)){
+            throw new IllegalArgumentException("All tiles should be non null");
         }
+        //System.out.println(inWorld.length);
+        //System.out.println(inWorld[0].length);
 
         this.WORLD = inWorld;
         int AREA = WORLD.length * WORLD[1].length;
