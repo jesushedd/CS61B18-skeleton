@@ -8,8 +8,8 @@ import byog.algorithms.RandomWalkGenerator;
 public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
-    public static final int WIDTH = 40;
-    public static final int HEIGHT = 15;
+    public static final int WIDTH = 80;
+    public static final int HEIGHT = 30;
 
     private TETile[][] MAP;
 
@@ -23,15 +23,14 @@ public class Game {
         fillVoids(MAP);
         ter.initialize(WIDTH, HEIGHT);
 
-        RandomWalkGenerator mapGenerator = new RandomWalkGenerator(MAP, 25);
+        RandomWalkGenerator mapGenerator = new RandomWalkGenerator(MAP, 99);
         while (mapGenerator.getUsedArea() <  AREA  ){
-            System.out.println(mapGenerator.getUsedArea());
+            //System.out.println(mapGenerator.getUsedArea());
             mapGenerator.setTiles();
-            ter.renderFrame(MAP);
         }
         ter.renderFrame(MAP);
         System.out.println("Listo! " + mapGenerator.getFinalCount());
-        System.out.println(mapGenerator.getUsedArea());
+        //System.out.println(mapGenerator.getUsedArea());
 
 
     }
