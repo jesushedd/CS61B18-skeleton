@@ -2,27 +2,30 @@ package byog.algorithms;
 
 import byog.Core.RandomUtils;
 import byog.TileEngine.TETile;
-import byog.TileEngine.Tileset;
 import byog.Core.TileMatrixHelpers;
+import byog.TileEngine.Tileset;
 import byog.algorithms.position.Position;
 
 import java.util.Random;
 
 
 
-public class RoomsThenHallsGenerator {
+public class RoomsThenHallsGenerator implements GenAlgorithm{
 
     private static class Room {
-        private final Position topLeftCorner;
-        private final Position botRightCorner;
-        private final int width;
-        private final int height;
-        private Room(Position topLeft, int inWidth, int inHeight ){
-            topLeftCorner = topLeft;
-            width = inWidth;
-            height = inHeight;
-            botRightCorner = new Position(topLeft.getXxPosition() + width, topLeft.getYyPosition() +height);
+        private final Position botLeftCorner;
+        private final Position topRightCorner;
+        private Room(Position botLeft, Position topRight ){
+            botLeftCorner = botLeft;
+            topRightCorner = topRight;
+        }
 
+        private int getWidth(){
+            return topRightCorner.getXxPosition() - botLeftCorner.getXxPosition();
+        }
+
+        private int getHeight(){
+            return topRightCorner.getYyPosition() - botLeftCorner.getYyPosition();
         }
     }
     private final Random random;
@@ -53,31 +56,62 @@ public class RoomsThenHallsGenerator {
         ROOM_WIDTH_MAX =  (int) (WIDTH_PROPORTION * widthOfWorld);
         ROOM_HEIGHT_MAX = (int) (HEIGHT_PROPORTION * heightOfWorld);
     }
+    @Override
+    public void setTiles(){
+        Room room = getRandomRoom();
+        placeRoom(room);
+    }
 
+    @Override
+    public int getUsedArea() {
+        return 0;
+    }
 
-    private void createRandomHall(){
+    private Room getRandomRoom(){
         //create position x, y at top left corner
         int x = RandomUtils.uniform(random, X_MAX + 1);
         int y = RandomUtils.uniform(random, Y_MAX+ 1);
+
+        Position botLeftCorner = new Position(x, y);
+        //getting a valid top right corner position from left corner
+        Position topRightCorner = null;
+        while (!isWithinBounds(topRightCorner)){
+            topRightCorner = randomBotCorner(botLeftCorner);
+        }
+        return new Room(botLeftCorner, topRightCorner);
+    }
+
+    private boolean isWithinBounds(Position pos){
+        if (pos == null){
+            return false;
+        }
+        return (pos.getXxPosition() <= X_MAX && pos.getYyPosition() <= Y_MAX);
+    }
+
+    private Position randomBotCorner(Position botCorner){
         //random width
         int width = RandomUtils.uniform(random,ROOM_MIN_LEN, ROOM_WIDTH_MAX + 1);
         //random height
         int height = RandomUtils.uniform(random, ROOM_MIN_LEN, ROOM_HEIGHT_MAX + 1);
-        //check is between world bounds
-        int botRightX = x + width;
-        int botRightY = y + height;
+
+        return new Position(botCorner.getXxPosition() + width , botCorner.getYyPosition() + height);
     }
 
 
 
 
-    public void fillTest(){
-        for (int y = 0; y < ROOM_HEIGHT_MAX ; y++) {
-            for (int x = 0; x < ROOM_WIDTH_MAX; x++) {
-
-                WORLD[x][y] = Tileset.FLOWER;
+    private void placeRoom(Room roomToPlace){
+        // Get starting coordinates
+        int xStart = roomToPlace.botLeftCorner.getXxPosition();
+        int yStart = roomToPlace.botLeftCorner.getYyPosition();
+        //fill tiles
+        for (int y = yStart ; y <= yStart + roomToPlace.getHeight(); y++) {
+            for (int x = xStart; x < xStart + roomToPlace.getWidth()  ; x++) {
+                WORLD[x][y] = Tileset.FLOOR;
             }
-
         }
+        }
+
+
     }
-}
+
