@@ -7,21 +7,27 @@ import byog.TileEngine.Tileset;
 import byog.algorithms.position.Position;
 
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Random;
-
+import java.util.TreeSet;
 
 
 public class RoomsThenHallsGenerator implements GenAlgorithm{
 
-    private static class Room {
+    private class Room {
         private final Position botLeftCorner;
         private final Position topRightCorner;
 
         private final Position centroid;
+        private final int distanceFromOrigin;
         private Room(Position botLeft, Position topRight ){
             botLeftCorner = botLeft;
             topRightCorner = topRight;
             centroid = calculateCentroid(botLeft, topRight);
+
+            //distanceFromOrigin
+            distanceFromOrigin = (int) (1000 * distanceTo(RoomsThenHallsGenerator.this.origin));
+
         }
 
         private int getWidth(){
@@ -46,6 +52,10 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
             int base = topRight.getXxPosition() - botLeft.getXxPosition();
             return base * height;
         }
+
+        private double distanceTo(Position pos){
+            return Math.sqrt( Math.pow (centroid.getYyPosition() - pos.getYyPosition(), 2) + Math.pow (centroid.getXxPosition() - pos.getXxPosition(), 2));
+        }
     }
     private final Random random;
     private final TETile[][] WORLD;
@@ -55,8 +65,10 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
     private final int ROOM_MIN_LEN = 2;
     private final int ROOM_HEIGHT_MAX;
 
-    private final LinkedList<Room> listOfRooms = new LinkedList<>();
+    private final TreeSet<Room> listOfRooms = new TreeSet<>((a, b) -> a.distanceFromOrigin - b.distanceFromOrigin );
+    //private final LinkedList<Room> listOfRooms = new LinkedList<>();
     private int usedArea = 0;
+    private final Position origin;
 
 
 
@@ -91,6 +103,10 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         if (X_MAX - ROOM_WIDTH_MAX <= 2 || Y_MAX - ROOM_WIDTH_MAX <= 2){
             throw new IllegalArgumentException("Illegal aspect ratio");
         }
+
+        //Set origin position
+        origin = new Position(X_MAX /2 , Y_MAX / 2);//at bottom middle of world
+
     }
     @Override
     public void setTiles(){
@@ -148,7 +164,10 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         //pop last room, trace  path from its centroid   to new last room centroid
          while (listOfRooms.size() > 1) {
             Position starting = listOfRooms.pollLast().centroid;
-            Position ending = listOfRooms.peekLast().centroid;
+            Position ending = listOfRooms.last().centroid;
+
+            /*Position starting = listOfRooms.pollLast().centroid;
+            Position ending = listOfRooms.peekLast().centroid;*/
             
             int dX = ending.getXxPosition() - starting.getXxPosition();
             int dY = ending.getYyPosition() - starting.getYyPosition();
