@@ -6,9 +6,7 @@ import byog.Core.TileMatrixHelpers;
 import byog.TileEngine.Tileset;
 import byog.algorithms.position.Position;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 
@@ -35,13 +33,11 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         }
 
 
-        private Position getCentroid(){
-            return centroid;
-        }
+        
 
         private Position calculateCentroid(Position botLeft, Position topRight){
-            int height = topRight.getYyPosition() - botLeft.getYyPosition();
-            int base = topRight.getXxPosition() - botLeft.getXxPosition();
+            int height = topRight.getYyPosition() + botLeft.getYyPosition();
+            int base = topRight.getXxPosition() + botLeft.getXxPosition();
             return new Position(base / 2, height / 2);
         }
 
@@ -99,6 +95,7 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
     @Override
     public void setTiles(){
         placeRoom();
+        //fillHalls();
     }
 
     @Override
@@ -145,10 +142,87 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         listOfRooms.add(roomToPlace);
         placeRoomInterior(roomToPlace);
         placeRoomWalls(roomToPlace);
+    }
+
+    public void fillHalls(){
+        //pop last room, trace  path from its centroid   to new last room centroid
+         while (listOfRooms.size() > 1) {
+            Position starting = listOfRooms.pollLast().centroid;
+            Position ending = listOfRooms.peekLast().centroid;
+            
+            int dX = ending.getXxPosition() - starting.getXxPosition();
+            int dY = ending.getYyPosition() - starting.getYyPosition();
+             //if 0 trace horizontal component first, else race vertical first
+            int direction = RandomUtils.uniform(random, 2);
+            Position intermediate;
+            if (direction == 0){
+                intermediate = new Position(starting.getXxPosition() + dX, starting.getYyPosition());
+            } else {
+                intermediate = new Position(starting.getXxPosition(), starting.getYyPosition() + dY); 
+            }
+            
+            traceLinealHall(starting, intermediate);
+            traceLinealHall(intermediate, ending);
+        }
+    }
+    
+    
+    private void traceLinealHall(Position start, Position end){
+        boolean vertical = start.getXxPosition() == end.getXxPosition();
+        boolean horizontal = start.getYyPosition() == end.getYyPosition();
+        
+        if (horizontal) {
+            int y = start.getYyPosition();
+
+            int dx = (end.getXxPosition() - start.getXxPosition());
+            if (dx != 0) {
+                dx = dx / Math.abs(end.getXxPosition() - start.getXxPosition());
+            }
+
+            for (int x = start.getXxPosition(); x != end.getXxPosition() + dx; x += dx) {
+                WORLD[x][y] = Tileset.GRASS;
+                traceHorizontalWalls(x,y);
+            }
+
+        } else if (vertical) {
+            int x = start.getXxPosition();
+
+            int dy = (end.getYyPosition() - start.getYyPosition());
+            if (dy != 0){
+                dy = dy / Math.abs(end.getYyPosition() - start.getYyPosition());
+            }
+
+            for (int y = start.getYyPosition(); y != end.getYyPosition() + dy; y += dy) {
+                WORLD[x][y] = Tileset.GRASS;
+                traceVerticalWalls(x, y);
+            }
+
+        }
+    }
+
+    private void traceHorizontalWalls(int x, int y){
+        int topWall = y + 1;
+        int bottomWall = y - 1;
+
+        if (tilesIsNothing(x, topWall)){
+            WORLD[x][topWall] = Tileset.WALL;
+        }
+        if (tilesIsNothing(x, bottomWall)){
+            WORLD[x][bottomWall] = Tileset.WALL;
+        }
+    }
 
 
+    private void traceVerticalWalls(int x, int y){
+        int rightWall = x + 1;
+        int leftWall = x - 1;
 
-
+        if (tilesIsNothing(rightWall, y)){
+            WORLD[rightWall][y] = Tileset.WALL;
+        }
+        if (tilesIsNothing(leftWall, y)){
+            WORLD[leftWall][y] = Tileset.WALL;
+        }
     }
     private void placeRoomInterior(Room room){
         // Get starting coordinates
