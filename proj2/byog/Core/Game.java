@@ -3,7 +3,9 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
+import byog.algorithms.GenAlgorithm;
 import byog.algorithms.RandomWalkGenerator;
+import byog.algorithms.RoomsThenHallsGenerator;
 
 public class Game {
     TERenderer ter = new TERenderer();
@@ -18,18 +20,29 @@ public class Game {
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
-    public void playWithKeyboard() {
+    public void playWithKeyboard() throws InterruptedException {
         MAP = new TETile[WIDTH][HEIGHT];
         fillVoids(MAP);
         ter.initialize(WIDTH, HEIGHT);
 
-        RandomWalkGenerator mapGenerator = new RandomWalkGenerator(MAP, 99);
-        while (mapGenerator.getUsedArea() <  AREA  ){
+        RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, 8375);
+        while (roomGenerator.getUsedArea() <  AREA / 10  ){
             //System.out.println(mapGenerator.getUsedArea());
-            mapGenerator.setTiles();
+            roomGenerator.setTiles();
+            Thread.sleep(500);
+            ter.renderFrame(MAP);
         }
+
+        roomGenerator.fillHalls();
+
+        /*GenAlgorithm randomWalkGenerator = new RandomWalkGenerator(MAP, 99);
+        while (roomGenerator.getUsedArea() <  AREA  ){
+            //System.out.println(mapGenerator.getUsedArea());
+            randomWalkGenerator.setTiles();
+            ter.renderFrame(MAP);
+        }*/
+
         ter.renderFrame(MAP);
-        System.out.println("Listo! " + mapGenerator.getFinalCount());
         //System.out.println(mapGenerator.getUsedArea());
 
 

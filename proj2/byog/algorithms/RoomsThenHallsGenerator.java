@@ -68,7 +68,7 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
     private final TreeSet<Room> listOfRooms = new TreeSet<>((a, b) -> a.distanceFromOrigin - b.distanceFromOrigin );
     //private final LinkedList<Room> listOfRooms = new LinkedList<>();
     private int usedArea = 0;
-    private final Position origin;
+    private Position origin;
 
 
 
@@ -105,7 +105,7 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         }
 
         //Set origin position
-        origin = new Position(X_MAX /2 , Y_MAX / 2);//at bottom middle of world
+        origin = new Position(X_MAX* 3/4 , Y_MAX/2);//at bottom middle of world
 
     }
     @Override
@@ -158,6 +158,7 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         listOfRooms.add(roomToPlace);
         placeRoomInterior(roomToPlace);
         placeRoomWalls(roomToPlace);
+        //relocateOrigin(roomToPlace.centroid);
     }
 
     public void fillHalls(){
@@ -302,6 +303,14 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
     }
     private boolean tilesIsNothing(int x, int y){
         return WORLD[x][y] == Tileset.NOTHING;
+    }
+
+
+    private void relocateOrigin(Position centroidR){
+        int n = RandomUtils.uniform(random, 30);
+        if (n < 10){
+            origin = centroidR;
+        }
     }
 
 
