@@ -22,7 +22,7 @@ public class Game {
      */
     public void playWithKeyboard() throws InterruptedException {
         MAP = new TETile[WIDTH][HEIGHT];
-        fillVoids(MAP);
+        TileMatrixHelpers.fillVoids(MAP);
         ter.initialize(WIDTH, HEIGHT);
 
         RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, 8375);
@@ -47,18 +47,6 @@ public class Game {
 
 
     }
-
-    private static void fillVoids(TETile[][] w){
-        int height = w[0].length;
-        int width = w.length;
-
-        for (int i = 0; i < width ; i++) {
-            for (int j = 0; j < height ; j++) {
-                w[i][j] = Tileset.NOTHING;
-            }
-        }
-    }
-
     /**
      * Method used for autograding and testing the game code. The input string will be a series
      * of characters (for example, "n123sswwdasdassadwas", "n123sss:q", "lwww". The game should
