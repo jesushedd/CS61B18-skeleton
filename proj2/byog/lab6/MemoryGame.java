@@ -1,5 +1,6 @@
 package byog.lab6;
 
+import byog.Core.RandomUtils;
 import edu.princeton.cs.introcs.StdDraw;
 
 import java.awt.Color;
@@ -43,13 +44,26 @@ public class MemoryGame {
         StdDraw.setYscale(0, this.height);
         StdDraw.clear(Color.BLACK);
         StdDraw.enableDoubleBuffering();
-
         //TODO: Initialize random number generator
+        this.rand = rand;
+
     }
 
     public String generateRandomString(int n) {
         //TODO: Generate random string of letters of length n
-        return null;
+        //alocate StringBuilder
+        StringBuilder rdString = new StringBuilder();
+        //for n, get a random char
+        for (int i = 0; i < n ; i++) {
+            rdString.append(getRandomChar());
+        }
+
+
+        return rdString.toString();
+    }
+
+    private char getRandomChar(){
+        return CHARACTERS[rand.nextInt(CHARACTERS.length)];
     }
 
     public void drawFrame(String s) {
