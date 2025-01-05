@@ -68,6 +68,14 @@ public class MemoryGame {
 
     public void drawFrame(String s) {
         //TODO: Take the string and display it in the center of the screen
+        Font font = new Font("Arial", Font.BOLD, 40);
+        StdDraw.setFont(font);
+        for (char c : s.toCharArray()){
+            StdDraw.clear();
+            StdDraw.text(this.width / 2, this.height / 2, String.valueOf(c));
+            StdDraw.show();
+            StdDraw.pause(500);
+        }
         //TODO: If game is not over, display relevant game information at the top of the screen
     }
 
