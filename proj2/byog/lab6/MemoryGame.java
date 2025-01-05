@@ -44,7 +44,7 @@ public class MemoryGame {
         StdDraw.setYscale(0, this.height);
         StdDraw.clear(Color.BLACK);
         StdDraw.enableDoubleBuffering();
-        //TODO: Initialize random number generator
+        // Initialize random number generator
         this.rand = rand;
 
         round = 1;
@@ -52,7 +52,7 @@ public class MemoryGame {
     }
 
     public String generateRandomString(int n) {
-        //TODO: Generate random string of letters of length n
+        // Generate random string of letters of length n
         //alocate StringBuilder
         StringBuilder rdString = new StringBuilder();
         //for n, get a random char
@@ -69,7 +69,7 @@ public class MemoryGame {
     }
 
     public void drawFrame() {
-        //TODO: Take the string and display it in the center of the screen
+        //Take the string and display it in the center of the screen
         String message = playerTurn ? "Guess!" : "Watch!";
         StdDraw.setPenColor(StdDraw.BLUE);
 
@@ -84,11 +84,11 @@ public class MemoryGame {
         StdDraw.text(width * 7.0 / 8.0 , 39, ENCOURAGEMENT[rand.nextInt(ENCOURAGEMENT.length)]);
         StdDraw.show();
 
-        //TODO: If game is not over, display relevant game information at the top of the screen
+        // If game is not over, display relevant game information at the top of the screen
     }
 
     public void flashSequence(String letters) {
-        //TODO: Display each character in letters, making sure to blank the screen between letters
+        // Display each character in letters, making sure to blank the screen between letters
         for (char c : letters.toCharArray()){
             StdDraw.clear();
             StdDraw.text(this.width / 2.0, this.height / 2.0, String.valueOf(c));
@@ -107,7 +107,7 @@ public class MemoryGame {
         while (StdDraw.hasNextKeyTyped()) StdDraw.nextKeyTyped();
 
 
-        //TODO: Read n letters of player input
+        // Read n letters of player input
         //player set all chars != n
         int charCount = 0;
         playerTurn = true;
@@ -164,13 +164,13 @@ public class MemoryGame {
     }
 
     public void startGame() {
-        //TODO: Set any relevant variables before the game starts
+        //Set any relevant variables before the game starts
         round = 1;
         gameOver = false;
 
 
 
-        //TODO: Establish Game loop
+        //Establish Game loop
         while (!gameOver){
             showRoundNumber();
             String targetString = generateRandomString(round);
