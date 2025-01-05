@@ -73,15 +73,15 @@ public class MemoryGame {
         String message = playerTurn ? "Guess!" : "Watch!";
         StdDraw.setPenColor(StdDraw.BLUE);
 
-        StdDraw.rectangle(width/2.0, 19, width / 2, 1);
+        StdDraw.rectangle(width/2.0, 39, width / 2, 1);
         //Rounder number left extreme
         Font font = new Font("Monaco", Font.BOLD, 25);
         StdDraw.setFont(font);
-        StdDraw.text(width / 8.0, 19,"Round: " + round);
+        StdDraw.text(width / 8.0, 39,"Round: " + round);
         //Game state ,Center
-        StdDraw.text(width / 2.0, 19, message);
+        StdDraw.text(width / 2.0, 39, message);
         //Cheer Message, right extreme
-        StdDraw.text(width * 7.0 / 8.0 , 19, ENCOURAGEMENT[rand.nextInt(ENCOURAGEMENT.length)]);
+        StdDraw.text(width * 7.0 / 8.0 , 39, ENCOURAGEMENT[rand.nextInt(ENCOURAGEMENT.length)]);
         StdDraw.show();
 
         //TODO: If game is not over, display relevant game information at the top of the screen
@@ -103,6 +103,10 @@ public class MemoryGame {
     }
 
     public String solicitNCharsInput(int n) {
+        //Clear buffer
+        while (StdDraw.hasNextKeyTyped()) StdDraw.nextKeyTyped();
+
+
         //TODO: Read n letters of player input
         //player set all chars != n
         int charCount = 0;
