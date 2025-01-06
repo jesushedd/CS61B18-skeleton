@@ -55,7 +55,19 @@ public class Game {
         while (!gameOver){
             Character c = listenKey();
             if (c!= null){
-                //TODO something with key pressed
+                switch (c){
+                    case 'w':
+                        player.moveUp();
+                        break;
+                    case  's':
+                        player.moveDown();
+                        break;
+                    case 'd':
+                        player.moveRight();
+                        break;
+                    case 'a':
+                        player.moveLeft();
+                }
             }
             ter.renderFrame(MAP);
             StdDraw.pause(33);
