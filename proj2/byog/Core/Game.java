@@ -3,6 +3,11 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.algorithms.RoomsThenHallsGenerator;
+import edu.princeton.cs.introcs.StdDraw;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Game {
 
@@ -12,9 +17,15 @@ public class Game {
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
 
+    private final Set<Character> MOVEMENT_KEYS = new HashSet<>(List.of('w', 'a', 's', 'd'));
+
     private TETile[][] MAP;
 
     private final int AREA = WIDTH * HEIGHT;
+
+    private Player player;
+
+    private boolean gameOver = false;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -25,7 +36,7 @@ public class Game {
         ter.initialize(WIDTH, HEIGHT);
 
         RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, 8375);
-        roomGenerator.createWorld();
+        player = roomGenerator.createWorld();
 
         /*GenAlgorithm randomWalkGenerator = new RandomWalkGenerator(MAP, 99);
         while (roomGenerator.getUsedArea() <  AREA  ){
@@ -33,11 +44,38 @@ public class Game {
             randomWalkGenerator.setTiles();
             ter.renderFrame(MAP);
         }*/
-        ter.renderFrame(MAP);
+        gameLoop();
+
         //System.out.println(mapGenerator.getUsedArea());
 
 
     }
+
+    private void gameLoop(){
+        while (!gameOver){
+            Character c = listenKey();
+            if (c!= null){
+                //TODO something with key pressed
+            }
+            ter.renderFrame(MAP);
+            StdDraw.pause(33);
+        }
+    }
+
+    private Character listenKey(){
+        //while (StdDraw.hasNextKeyTyped()) StdDraw.nextKeyTyped();
+        char keyPressed = 0;
+        if (StdDraw.hasNextKeyTyped()){
+            keyPressed = StdDraw.nextKeyTyped();
+        }
+
+        if ( MOVEMENT_KEYS.contains(keyPressed)){
+            return keyPressed;
+        }
+        return null;
+    }
+
+
 
 
     /**
