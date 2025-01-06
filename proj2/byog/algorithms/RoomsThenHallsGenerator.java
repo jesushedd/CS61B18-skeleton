@@ -1,17 +1,19 @@
 package byog.algorithms;
 
+import byog.Core.Player;
 import byog.Core.RandomUtils;
 import byog.TileEngine.TETile;
 import byog.Core.TileMatrixHelpers;
 import byog.TileEngine.Tileset;
 import byog.algorithms.position.Position;
-
-import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.TreeSet;
 
 
+/*
+* Creates thw world based  on the algorithm:
+* First creates Rooms in random positions
+* Then lniks the rooms in order from most left to right*/
 public class RoomsThenHallsGenerator implements GenAlgorithm{
 
     private class Room {
@@ -67,8 +69,11 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
 
     private final TreeSet<Room> listOfRooms = new TreeSet<>((a, b) -> a.distanceFromOrigin - b.distanceFromOrigin );
     //private final LinkedList<Room> listOfRooms = new LinkedList<>();
+    private final int AREA;
     private int usedArea = 0;
     private Position origin;
+
+    private Player playerEntity;
 
 
 
@@ -85,6 +90,7 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         
         int heightOfWorld = inWorld[0].length;
         int widthOfWorld = inWorld.length;
+        AREA = heightOfWorld * widthOfWorld;
 
         if (heightOfWorld < 6 || widthOfWorld < 6){
             throw new IllegalArgumentException("Minimum side of world is 6");
@@ -117,6 +123,15 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
     @Override
     public int getUsedArea() {
         return usedArea;
+    }
+
+    public Player createWorld(){
+        while (getUsedArea() <  AREA / 10  ){
+            //System.out.println(mapGenerator.getUsedArea());
+            placeRoom();
+        }
+        fillHalls();
+        return playerEntity;
     }
 
     private Room getRandomRoom(){
@@ -184,9 +199,17 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
             traceLinealHall(starting, intermediate);
             traceLinealHall(intermediate, ending);
         }
+        setPlayer(listOfRooms.last());
     }
-    
-    
+
+    private void setPlayer(Room first) {
+        playerEntity = new Player(first.centroid, WORLD);
+        //draw player entity en world map
+        WORLD[playerEntity.getX()][playerEntity.getY()] = Tileset.PLAYER;
+
+    }
+
+
     private void traceLinealHall(Position start, Position end){
         boolean vertical = start.getXxPosition() == end.getXxPosition();
         boolean horizontal = start.getYyPosition() == end.getYyPosition();
