@@ -2,12 +2,11 @@ package byog.Core;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
-import byog.TileEngine.Tileset;
-import byog.algorithms.GenAlgorithm;
-import byog.algorithms.RandomWalkGenerator;
 import byog.algorithms.RoomsThenHallsGenerator;
 
 public class Game {
+
+
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
@@ -26,14 +25,7 @@ public class Game {
         ter.initialize(WIDTH, HEIGHT);
 
         RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, 8375);
-        while (roomGenerator.getUsedArea() <  AREA / 10  ){
-            //System.out.println(mapGenerator.getUsedArea());
-            roomGenerator.setTiles();
-            Thread.sleep(500);
-            ter.renderFrame(MAP);
-        }
-
-        roomGenerator.fillHalls();
+        roomGenerator.createWorld();
 
         /*GenAlgorithm randomWalkGenerator = new RandomWalkGenerator(MAP, 99);
         while (roomGenerator.getUsedArea() <  AREA  ){
@@ -41,12 +33,13 @@ public class Game {
             randomWalkGenerator.setTiles();
             ter.renderFrame(MAP);
         }*/
-
         ter.renderFrame(MAP);
         //System.out.println(mapGenerator.getUsedArea());
 
 
     }
+
+
     /**
      * Method used for autograding and testing the game code. The input string will be a series
      * of characters (for example, "n123sswwdasdassadwas", "n123sss:q", "lwww". The game should
