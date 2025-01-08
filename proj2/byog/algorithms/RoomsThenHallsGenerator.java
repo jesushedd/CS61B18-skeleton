@@ -227,7 +227,9 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
             }
 
             for (int x = start.getXxPosition(); x != end.getXxPosition() + dx; x += dx) {
-                WORLD[x][y] = Tileset.GRASS;
+                if (isAvailable(x,y)){
+                    WORLD[x][y] = Tileset.GRASS;
+                }
                 traceHorizontalWalls(x,y);
             }
 
@@ -240,7 +242,9 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
             }
 
             for (int y = start.getYyPosition(); y != end.getYyPosition() + dy; y += dy) {
-                WORLD[x][y] = Tileset.GRASS;
+                if (isAvailable(x, y)){
+                    WORLD[x][y] = Tileset.GRASS;
+                }
                 traceVerticalWalls(x, y);
             }
 
@@ -284,11 +288,12 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
             for (int x = xStart; x <= xStart + room.getWidth()  ; x++) {
                 if (tilesIsNothing(x,y)){
                     usedArea++;
+                    WORLD[x][y] = Tileset.GRASS;
+                    if (!isKeyPlaced){
+                        tryToPlaceKey(x,y);
+                    }
                 }
-                WORLD[x][y] = Tileset.GRASS;
-                if (!isKeyPlaced){
-                    tryToPlaceKey(x,y);
-                }
+
             }
         }
 
@@ -361,20 +366,25 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
 
     private void tryToPlaceKey(int x, int y){
         int prob = RandomUtils.uniform(random, 1000);
-        if (prob < 500){
+        if (prob < 100){
             WORLD[x][y] = Tileset.KEY;
             isKeyPlaced = true;
-            System.out.println(x + " " +y);
+            System.out.println(x + "key" +y);
         }
     }
 
     private void  tryToPlaceDoor(int x, int y){
         int prob = RandomUtils.uniform(random, 1000);
-        if (prob <500){
+        if (prob <100){
             WORLD[x][y] = Tileset.LOCKED_DOOR;
             isDoorPlaced = true;
-            System.out.println(x + " " +y);
+            System.out.println(x + "door" +y);
         }
+    }
+
+    private boolean isAvailable(int x, int y){
+        return WORLD[x][y] != Tileset.LOCKED_DOOR &  WORLD[x][y] != Tileset.KEY & WORLD[x][y] != Tileset.PLAYER;
+
     }
 
 
