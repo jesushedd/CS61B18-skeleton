@@ -75,6 +75,8 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
 
     private Player playerEntity;
 
+    private boolean isKeyPlaced = false;
+
 
 
     
@@ -278,6 +280,9 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
                     usedArea++;
                 }
                 WORLD[x][y] = Tileset.GRASS;
+                if (!isKeyPlaced){
+                    tryToPlaceKey(x,y);
+                }
             }
         }
 
@@ -333,6 +338,14 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         int n = RandomUtils.uniform(random, 30);
         if (n < 10){
             origin = centroidR;
+        }
+    }
+
+    private void tryToPlaceKey(int x, int y){
+        int prob = RandomUtils.uniform(random, 1000);
+        if (prob < 50){
+            WORLD[x][y] = Tileset.KEY;
+            isKeyPlaced = true;
         }
     }
 
