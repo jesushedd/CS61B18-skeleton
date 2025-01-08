@@ -77,6 +77,8 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
 
     private boolean isKeyPlaced = false;
 
+    private boolean isDoorPlaced = false;
+
 
 
     
@@ -251,9 +253,11 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
 
         if (tilesIsNothing(x, topWall)){
             WORLD[x][topWall] = Tileset.WALL;
+            if (!isDoorPlaced) tryToPlaceDoor(x, topWall);
         }
         if (tilesIsNothing(x, bottomWall)){
             WORLD[x][bottomWall] = Tileset.WALL;
+            if (!isDoorPlaced)  tryToPlaceDoor(x,bottomWall);
         }
     }
 
@@ -264,9 +268,11 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
 
         if (tilesIsNothing(rightWall, y)){
             WORLD[rightWall][y] = Tileset.WALL;
+            if (!isDoorPlaced) tryToPlaceDoor(rightWall, y);
         }
         if (tilesIsNothing(leftWall, y)){
             WORLD[leftWall][y] = Tileset.WALL;
+            if (!isDoorPlaced) tryToPlaceDoor(leftWall, y);
         }
     }
     private void placeRoomInterior(Room room){
@@ -297,6 +303,9 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         for (int i = startY; i <= endY ; i++) {
             if (tilesIsNothing(x, i)) {
                 WORLD[x][i] = Tileset.WALL;
+                if (!isDoorPlaced){
+                    tryToPlaceDoor(x,i);
+                }
             }
         }
 
@@ -305,6 +314,9 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         for(int i = startY; i <= endY ; i++) {
             if (tilesIsNothing(x, i)) {
                 WORLD[x][i] = Tileset.WALL;
+                if (!isDoorPlaced){
+                    tryToPlaceDoor(x,i);
+                }
             }
         }
         //place horizontal walls
@@ -316,6 +328,9 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         for(int i = startX; i <= endX ; i++) {
             if (tilesIsNothing(i, y)) {
                 WORLD[i][y] = Tileset.WALL;
+                if (!isDoorPlaced){
+                    tryToPlaceDoor(x,y);
+                }
             }
         }
         //top
@@ -323,6 +338,9 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         for(int i = startX; i <= endX ; i++) {
             if (tilesIsNothing(i, y)) {
                 WORLD[i][y] = Tileset.WALL;
+                if (!isDoorPlaced){
+                    tryToPlaceDoor(x,y);
+                }
             }
         }
 
@@ -343,9 +361,19 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
 
     private void tryToPlaceKey(int x, int y){
         int prob = RandomUtils.uniform(random, 1000);
-        if (prob < 50){
+        if (prob < 500){
             WORLD[x][y] = Tileset.KEY;
             isKeyPlaced = true;
+            System.out.println(x + " " +y);
+        }
+    }
+
+    private void  tryToPlaceDoor(int x, int y){
+        int prob = RandomUtils.uniform(random, 1000);
+        if (prob <500){
+            WORLD[x][y] = Tileset.LOCKED_DOOR;
+            isDoorPlaced = true;
+            System.out.println(x + " " +y);
         }
     }
 

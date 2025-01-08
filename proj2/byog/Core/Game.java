@@ -35,7 +35,7 @@ public class Game {
         TileMatrixHelpers.fillVoids(MAP);
         ter.initialize(WIDTH, HEIGHT);
 
-        RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, 8398975);
+        RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, 10);
         player = roomGenerator.createWorld();
 
         /*GenAlgorithm randomWalkGenerator = new RandomWalkGenerator(MAP, 99);
