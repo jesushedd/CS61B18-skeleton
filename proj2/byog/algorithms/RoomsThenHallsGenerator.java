@@ -369,7 +369,7 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         if (prob < 100){
             WORLD[x][y] = Tileset.KEY;
             isKeyPlaced = true;
-            System.out.println(x + "key" +y);
+
         }
     }
 
@@ -378,7 +378,7 @@ public class RoomsThenHallsGenerator implements GenAlgorithm{
         if (prob <100){
             WORLD[x][y] = Tileset.LOCKED_DOOR;
             isDoorPlaced = true;
-            System.out.println(x + "door" +y);
+
         }
     }
 
