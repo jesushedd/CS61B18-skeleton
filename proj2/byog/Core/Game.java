@@ -35,7 +35,7 @@ public class Game {
         TileMatrixHelpers.fillVoids(MAP);
         ter.initialize(WIDTH, HEIGHT);
 
-        RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, 10);
+        RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, 1780);
         player = roomGenerator.createWorld();
 
         /*GenAlgorithm randomWalkGenerator = new RandomWalkGenerator(MAP, 99);
@@ -68,6 +68,9 @@ public class Game {
                     case 'a':
                         player.moveLeft();
                 }
+            }
+            if (player.hasKey()){
+                System.out.println("I have the key!");
             }
             ter.renderFrame(MAP);
             StdDraw.pause(33);

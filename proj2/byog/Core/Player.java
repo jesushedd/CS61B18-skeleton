@@ -16,6 +16,7 @@ public class Player {
 
     private int prevX;
     private int prevY;
+    private boolean hasKey = false;
 
     /*Rep direction
     * 0 -> Up
@@ -85,7 +86,8 @@ public class Player {
     }
 
     /*
-    * Detects collision in current direction*/
+    * Detects collision in current direction
+    * Collision is when there is a wall*/
     private boolean canMove(){
         int nextX = getX();
         int nextY = getY();
@@ -103,7 +105,11 @@ public class Player {
                 nextX--;
                 break;
         }
-        return WORLD[nextX][nextY] == Tileset.GRASS;
+
+        if (WORLD[nextX][nextY] == Tileset.KEY){
+            hasKey = true;
+        }
+        return WORLD[nextX][nextY] != Tileset.WALL;
     }
 
     private void savePrevPosition(){
@@ -114,5 +120,9 @@ public class Player {
     private void drawMovement(){
         WORLD[getX()][getY()] = Tileset.PLAYER;
         WORLD[prevX][prevY] = Tileset.GRASS;
+    }
+
+    public boolean hasKey(){
+        return hasKey;
     }
 }
