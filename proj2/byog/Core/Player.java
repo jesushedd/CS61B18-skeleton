@@ -125,4 +125,23 @@ public class Player {
     public boolean hasKey(){
         return hasKey;
     }
+
+    public boolean isNearDoor(){
+        int yStart = getY() - 1;
+        int yEnd = getY() + 1;
+        int xStart = getX() - 1;
+        int xEnd = getX() + 1;
+        for (int i = xStart; i <= xEnd ; i++) {
+            for (int j = yStart; j <= yEnd ; j++) {
+                if (isDoor(i,j)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isDoor(int x, int y){
+        return WORLD[x][y] == Tileset.LOCKED_DOOR;
+    }
 }
