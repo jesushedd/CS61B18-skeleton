@@ -5,6 +5,7 @@ import byog.TileEngine.TETile;
 import byog.algorithms.RoomsThenHallsGenerator;
 import edu.princeton.cs.introcs.StdDraw;
 
+import java.awt.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +27,7 @@ public class Game {
     private Player player;
 
     private boolean gameOver = false;
+    private String tileHoveredDesc;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -57,7 +59,9 @@ public class Game {
             if (player.hasKey() & player.isNearDoor()){
                 gameOver = true;
             }
+
             ter.renderFrame(MAP);
+            showTileDescription();
             StdDraw.pause(33);
         }
         StdDraw.clear();
@@ -109,6 +113,26 @@ public class Game {
             return Character.toLowerCase(keyPressed);
         }
         return null;
+    }
+
+    private void overTile(){
+            int mouseX  = (int) StdDraw.mouseX();
+            int mouseY  = (int) StdDraw.mouseY();
+            if (yMouseInBounds(mouseY)) tileHoveredDesc = MAP[mouseX][mouseY].description();
+    }
+
+    private void showTileDescription(){
+        Font prevFont = StdDraw.getFont();
+        overTile();
+        StdDraw.setPenColor(Color.WHITE);
+        StdDraw.setFont(new Font("Arial Black",Font.BOLD,16));
+        StdDraw.text(74,1, tileHoveredDesc);
+        StdDraw.show();
+        StdDraw.setFont(prevFont);
+    }
+
+    private boolean yMouseInBounds(int y){
+        return y < HEIGHT - 1;
     }
 
 
