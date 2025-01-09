@@ -35,7 +35,7 @@ public class Game {
         TileMatrixHelpers.fillVoids(MAP);
         ter.initialize(WIDTH, HEIGHT);
 
-        RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, 1780);
+        RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, 123780);
         player = roomGenerator.createWorld();
 
         /*GenAlgorithm randomWalkGenerator = new RandomWalkGenerator(MAP, 99);
@@ -53,39 +53,57 @@ public class Game {
 
     private void gameLoop(){
         while (!gameOver){
-            Character c = listenKey();
-            if (c!= null){
-                switch (c){
-                    case 'w':
-                        player.moveUp();
-                        break;
-                    case  's':
-                        player.moveDown();
-                        break;
-                    case 'd':
-                        player.moveRight();
-                        break;
-                    case 'a':
-                        player.moveLeft();
-                }
-            }
-            if (player.hasKey()){
-                System.out.println("I have the key!");
+            movePlayer(listenKey());
+            if (player.hasKey() & player.isNearDoor()){
+                gameOver = true;
             }
             ter.renderFrame(MAP);
             StdDraw.pause(33);
+        }
+        StdDraw.clear();
+        StdDraw.show();
+
+    }
+
+    private void movePlayer(Character typed){
+        if (typed != null){
+            switch (typed){
+                case 'w':
+                    player.moveUp();
+                    break;
+                case  's':
+                    player.moveDown();
+                    break;
+                case 'd':
+                    player.moveRight();
+                    break;
+                case 'a':
+                    player.moveLeft();
+            }
         }
     }
 
     private Character listenKey(){
         //while (StdDraw.hasNextKeyTyped()) StdDraw.nextKeyTyped();
-        char keyPressed = 0;
-        if (StdDraw.hasNextKeyTyped()){
-            keyPressed = StdDraw.nextKeyTyped();
+
+
+        if (!StdDraw.hasNextKeyTyped()){
+            return null;
+        }
+
+        char keyPressed = StdDraw.nextKeyTyped();
+        if (keyPressed == ':'){
+            StdDraw.pause(300);
+            if (StdDraw.hasNextKeyTyped()){
+                if (Character.toLowerCase(StdDraw.nextKeyTyped()) == 'q'){
+                    gameOver = true;
+                }
+            }
+
         }
 
         if ( MOVEMENT_KEYS.contains(keyPressed)){
-            return keyPressed;
+            return Character.toLowerCase(keyPressed);
         }
         return null;
     }
