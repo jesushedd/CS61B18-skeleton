@@ -131,6 +131,7 @@ public class Player {
         int yEnd = getY() + 1;
         int xStart = getX() - 1;
         int xEnd = getX() + 1;
+        //Look for key in a 3 x 3 square
         for (int i = xStart; i <= xEnd ; i++) {
             for (int j = yStart; j <= yEnd ; j++) {
                 if (isDoor(i,j)){
