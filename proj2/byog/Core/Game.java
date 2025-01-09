@@ -83,6 +83,9 @@ public class Game {
         }
     }
 
+    /*
+    * Listen for a key if there is some key return it
+    * If key is ':' wait a little bit to listen another key, if that key is 'q' set game over = true*/
     private Character listenKey(){
         //while (StdDraw.hasNextKeyTyped()) StdDraw.nextKeyTyped();
 
