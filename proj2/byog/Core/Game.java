@@ -8,6 +8,7 @@ import edu.princeton.cs.introcs.StdDraw;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 public class Game {
@@ -33,12 +34,8 @@ public class Game {
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() throws InterruptedException {
-        MAP = new TETile[WIDTH][HEIGHT];
-        TileMatrixHelpers.fillVoids(MAP);
-        ter.initialize(WIDTH, HEIGHT);
+        makeNewGame(10);
 
-        RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, 123780);
-        player = roomGenerator.createWorld();
 
         /*GenAlgorithm randomWalkGenerator = new RandomWalkGenerator(MAP, 99);
         while (roomGenerator.getUsedArea() <  AREA  ){
@@ -54,6 +51,7 @@ public class Game {
     }
 
     private void gameLoop(){
+        ter.initialize(WIDTH, HEIGHT);
         while (!gameOver){
             movePlayer(listenKey());
             if (player.hasKey() & player.isNearDoor()){
@@ -154,8 +152,32 @@ public class Game {
         // TODO: Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
+        input = input.toLowerCase();
+        char startingOption = input.charAt(0);
+        if (!(startingOption == 'n' | startingOption == 'l')){
+            return null;
+        }
+
+        boolean startingNewGame = startingOption == 'n';
+        String commands = input.substring(1);
+
+
+        if (startingNewGame){
+            if (!commands.matches("^\\d+[wasd]*(:q)?$")){
+                return null;
+            }
+            long seed = Long.parseLong(commands.replaceAll("\\D", ""));
+            makeNewGame(seed);
+        }
 
         TETile[][] finalWorldFrame = null;
         return finalWorldFrame;
+    }
+
+    private void makeNewGame(long seed){
+        MAP = new TETile[WIDTH][HEIGHT];
+        TileMatrixHelpers.fillVoids(MAP);
+        RoomsThenHallsGenerator roomGenerator = new RoomsThenHallsGenerator(MAP, seed);
+        player = roomGenerator.createWorld();
     }
 }
